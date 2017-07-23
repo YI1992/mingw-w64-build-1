@@ -97,7 +97,7 @@ function mingw-w64-build {  # mingw-w64-build $TARGET_PARAM $TARGET_DIR
     local CONFIG_VER BINUTILS_VER MINGW_W64_VER GMP_VER MPFR_VER MPC_VER ISL_VER GCC_VER
     CONFIG_VER="7d3d27b"  # config.guess 2017-05-27
     BINUTILS_VER="2.28"
-    MINGW_W64_VER="5.0.2"
+    MINGW_W64_VER="25d51481e344be35d93524965309f514486395c0"  # mingw-w64 2017-07-19
     GMP_VER="6.1.2"
     MPFR_VER="3.1.5"
     MPC_VER="1.0.3"
@@ -108,7 +108,7 @@ function mingw-w64-build {  # mingw-w64-build $TARGET_PARAM $TARGET_DIR
     local CONFIG_PKG BINUTILS_PKG MINGW_W64_PKG GMP_PKG MPFR_PKG MPC_PKG ISL_PKG GCC_PKG PKGS
     CONFIG_PKG="config-${CONFIG_VER}.tar.gz"
     BINUTILS_PKG="binutils-${BINUTILS_VER}.tar.bz2"
-    MINGW_W64_PKG="mingw-w64-v${MINGW_W64_VER}.tar.bz2"
+    MINGW_W64_PKG="mingw-w64-mingw-w64-${MINGW_W64_VER}"
     GMP_PKG="gmp-${GMP_VER}.tar.bz2"
     MPFR_PKG="mpfr-${MPFR_VER}.tar.gz"
     MPC_PKG="mpc-${MPC_VER}.tar.gz"
@@ -120,7 +120,7 @@ function mingw-w64-build {  # mingw-w64-build $TARGET_PARAM $TARGET_DIR
     local CONFIG_URLS BINUTILS_URLS MINGW_W64_URLS GMP_URLS MPFR_URLS MPC_URLS ISL_URLS GCC_URLS URLS_VARNAMES
     CONFIG_URLS=("http://git.savannah.gnu.org/gitweb/?p=config.git;a=snapshot;h=${CONFIG_VER};sf=tgz")
     BINUTILS_URLS=("https://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VER}.tar.bz2")
-    MINGW_W64_URLS=("http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v${MINGW_W64_VER}.tar.bz2")
+    MINGW_W64_URLS=("https://sourceforge.net/code-snapshots/git/m/mi/mingw-w64/mingw-w64.git/mingw-w64-mingw-w64-${MINGW_W64_VER}.zip")
     GMP_URLS=("https://ftp.gnu.org/gnu/gmp/gmp-${GMP_VER}.tar.bz2")
     MPFR_URLS=("https://ftp.gnu.org/gnu/mpfr/mpfr-${MPFR_VER}.tar.gz")
     MPC_URLS=("https://ftp.gnu.org/gnu/mpc/mpc-${MPC_VER}.tar.gz")
@@ -132,7 +132,7 @@ function mingw-w64-build {  # mingw-w64-build $TARGET_PARAM $TARGET_DIR
     local CONFIG_SHA256 BINUTILS_SHA256 MINGW_W64_SHA256 GMP_SHA256 MPFR_SHA256 MPC_SHA256 ISL_SHA256 GCC_SHA256 CHECKSUMS
     CONFIG_SHA256="4642c727613ca922197932520e663477c9c13038683a320fb36ade2c8d525404"
     BINUTILS_SHA256="6297433ee120b11b4b0a1c8f3512d7d73501753142ab9e2daa13c5a3edd32a72"
-    MINGW_W64_SHA256="5f46e80ff1a9102a37a3453743dae9df98262cba7c45306549ef7432cfd92cfd"
+    MINGW_W64_SHA256="8938ebc5132be9669111e42d35f97a9e7891c1bfe2e5bd1f3759096824e6e4f3"
     GMP_SHA256="5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2"
     MPFR_SHA256="f4eb5070883aee3fd8b927751ea63ff95aebe24418cde852439ce74c3dd2513c"
     MPC_SHA256="617decc6ea09889fb08ede330917a00b16809b8db88c29c31bfbb49cbf88ecc3"
@@ -338,7 +338,7 @@ default install-dir: ${HOME}/toolchains/mingw-w64-${MINGW_W64_VER}-gcc-${GCC_VER
     echo "  mingw-w64 ${MINGW_W64_VER} headers"
     mkdir -pv "${BUILD_DIR}/mingw-w64-headers" > "${BUILD_DIR}/mingw-w64-headers.log" 2>&1 || return 1
     cd "${BUILD_DIR}/mingw-w64-headers"
-    "${SOURCE_DIR}/mingw-w64/mingw-w64-v${MINGW_W64_VER}/mingw-w64-headers/configure" --build="${SYS_TYPE}" --host="${TARGET}" --prefix="${MINGW_W64_DIR}" >> "${BUILD_DIR}/mingw-w64-headers.log" 2>&1 || return 1
+    "${SOURCE_DIR}/mingw-w64/mingw-w64-mingw-w64-${MINGW_W64_VER}/mingw-w64-headers/configure" --build="${SYS_TYPE}" --host="${TARGET}" --prefix="${MINGW_W64_DIR}" >> "${BUILD_DIR}/mingw-w64-headers.log" 2>&1 || return 1
     make install >> "${BUILD_DIR}/mingw-w64-headers.log" 2>&1 || return 1
 
     # create symlinks
@@ -423,7 +423,7 @@ default install-dir: ${HOME}/toolchains/mingw-w64-${MINGW_W64_VER}-gcc-${GCC_VER
     fi
     mkdir -pv "${BUILD_DIR}/mingw-w64-crt" > "${BUILD_DIR}/mingw-w64-crt.log" 2>&1 || return 1
     cd "${BUILD_DIR}/mingw-w64-crt"
-    "${SOURCE_DIR}/mingw-w64/mingw-w64-v${MINGW_W64_VER}/mingw-w64-crt/configure" --build="${SYS_TYPE}" --host="${TARGET}" --prefix="${MINGW_W64_DIR}" --with-sysroot="${MINGW_W64_DIR}" "${MINGW_W64_CONFIG_EXTRA[@]}" >> "${BUILD_DIR}/mingw-w64-crt.log" 2>&1 || return 1
+    "${SOURCE_DIR}/mingw-w64/mingw-w64-mingw-w64-${MINGW_W64_VER}/mingw-w64-crt/configure" --build="${SYS_TYPE}" --host="${TARGET}" --prefix="${MINGW_W64_DIR}" --with-sysroot="${MINGW_W64_DIR}" "${MINGW_W64_CONFIG_EXTRA[@]}" >> "${BUILD_DIR}/mingw-w64-crt.log" 2>&1 || return 1
     make -j "${CPU_COUNT}" >> "${BUILD_DIR}/mingw-w64-crt.log" 2>&1 || return 1
     make install-strip >> "${BUILD_DIR}/mingw-w64-crt.log" 2>&1 || return 1
 
